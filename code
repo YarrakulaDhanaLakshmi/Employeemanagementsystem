@@ -1,0 +1,166 @@
+import java.util.HashSet;
+import java.util.Scanner;
+
+class Employee {
+    private int id;
+    private String name;
+    private int age;
+    private String designation;
+    private String department;
+    private double salary;
+
+    public Employee(int id, String name, int age, String designation, String department, double salary) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.designation = designation;
+        this.department = department;
+        this.salary = salary;
+    }
+
+    public int getId() { return id; }
+    public String getName() { return name; }
+    public int getAge() { return age; }
+    public String getDesignation() { return designation; }
+    public String getDepartment() { return department; }
+    public double getSalary() { return salary; }
+
+    public void setName(String name) { this.name = name; }
+    public void setSalary(double salary) { this.salary = salary; }
+
+    @Override
+    public String toString() {
+        return "Employee [ID=" + id + ", Name=" + name + ", Age=" + age + 
+               ", Designation=" + designation + ", Department=" + department + 
+               ", Salary=" + salary + "]";
+    }
+}
+
+class EmployeeService {
+    private HashSet<Employee> employees = new HashSet<>();
+    private Scanner scanner = new Scanner(System.in);
+
+    public EmployeeService() {
+        employees.add(new Employee(101, "Shital", 24, "Developer", "IT", 25000));
+        employees.add(new Employee(102, "Meena", 26, "Tester", "CO", 57000));
+        employees.add(new Employee(103, "Bob", 20, "DevOps Eng", "Admin", 5000));
+        employees.add(new Employee(104, "Max", 27, "System Eng", "CO", 70000));
+    }
+
+    public void viewAllEmployees() {
+        for (Employee emp : employees) {
+            System.out.println(emp);
+        }
+    }
+
+    public void viewEmployee() {
+        System.out.print("Enter Employee ID: ");
+        int id = scanner.nextInt();
+        for (Employee emp : employees) {
+            if (emp.getId() == id) {
+                System.out.println(emp);
+                return;
+            }
+        }
+        System.out.println("Employee not found.");
+    }
+
+    public void updateEmployee() {
+        System.out.print("Enter Employee ID: ");
+        int id = scanner.nextInt();
+        for (Employee emp : employees) {
+            if (emp.getId() == id) {
+                System.out.print("Enter new Name: ");
+                String name = scanner.next();
+                System.out.print("Enter new Salary: ");
+                double salary = scanner.nextDouble();
+                emp.setName(name);
+                emp.setSalary(salary);
+                System.out.println("Employee updated: " + emp);
+                return;
+            }
+        }
+        System.out.println("Employee not found.");
+    }
+
+    public void deleteEmployee() {
+        System.out.print("Enter Employee ID: ");
+        int id = scanner.nextInt();
+        Employee toRemove = null;
+        for (Employee emp : employees) {
+            if (emp.getId() == id) {
+                toRemove = emp;
+                break;
+            }
+        }
+        if (toRemove != null) {
+            employees.remove(toRemove);
+            System.out.println("Employee deleted successfully.");
+        } else {
+            System.out.println("Employee not found.");
+        }
+    }
+
+    public void addEmployee() {
+        System.out.print("Enter ID: ");
+        int id = scanner.nextInt();
+        System.out.print("Enter Name: ");
+        String name = scanner.next();
+        System.out.print("Enter Age: ");
+        int age = scanner.nextInt();
+        System.out.print("Enter Designation: ");
+        String designation = scanner.next();
+        System.out.print("Enter Department: ");
+        String department = scanner.next();
+        System.out.print("Enter Salary: ");
+        double salary = scanner.nextDouble();
+        
+        Employee emp = new Employee(id, name, age, designation, department, salary);
+        employees.add(emp);
+        System.out.println("Employee added successfully!");
+    }
+}
+
+public class EmployeeManagementApp {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        EmployeeService employeeService = new EmployeeService();
+
+        while (true) {
+            System.out.println("\n*** Employee Management System ***");
+            System.out.println("1. Add Employee");
+            System.out.println("2. View Employee");
+            System.out.println("3. Update Employee");
+            System.out.println("4. Delete Employee");
+            System.out.println("5. View All Employees");
+            System.out.println("6. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice = scanner.nextInt();
+
+            switch (choice) {
+                case 1:
+                    employeeService.addEmployee();
+                    break;
+                case 2:
+                    employeeService.viewEmployee();
+                    break;
+                case 3:
+                    employeeService.updateEmployee();
+                    break;
+                case 4:
+                    employeeService.deleteEmployee();
+                    break;
+                case 5:
+                    employeeService.viewAllEmployees();
+                    break;
+                case 6:
+                    System.out.println("Exiting application. Goodbye!");
+                    scanner.close();
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice! Try again.");
+            }
+        }
+    }
+}
